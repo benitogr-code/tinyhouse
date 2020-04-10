@@ -1,0 +1,6 @@
+# VS Code settings
+.vscode
+
+# Server
+server/build
+server/node_modules
