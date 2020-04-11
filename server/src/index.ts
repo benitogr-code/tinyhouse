@@ -1,29 +1,12 @@
+import { ApolloServer } from "apollo-server-express";
 import express from "express";
-import bodyParser from "body-parser";
-import { listings } from "./listings";
+import { typeDefs, resolvers } from "./graphql";
 
-const app = express();
 const port = 9000;
+const app = express();
 
-app.use(bodyParser.json());
-
-app.get("/listings", (_req, res) => {
-  return res.send(listings);
-});
-
-app.post("/delete-listing", (req, res) => {
-  const id: string = req.body.id;
-
-  for (let i = 0; i < listings.length; ++i) {
-    if (listings[i].id === id) {
-      const deletedItems = listings.splice(i, 1);
-
-      return res.send(deletedItems);
-    }
-  }
-
-  return res.send("Listing not found");
-});
+const server = new ApolloServer({ typeDefs, resolvers });
+server.applyMiddleware({ app, path: "/api" });
 
 app.listen(port, () => {
   console.log(`[app] server running http://localhost:${port}`)
