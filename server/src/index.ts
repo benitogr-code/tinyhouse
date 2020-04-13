@@ -16,9 +16,6 @@ async function start(app: Application, port: number) {
 
   app.listen(port, async () => {
     console.log(`[app] server running http://localhost:${port}`)
-
-    const listings = await db.listings.find({}).toArray();
-    console.log(listings);
   });
 }
 
