@@ -1,13 +1,25 @@
 import { ApolloServer } from "apollo-server-express";
-import express from "express";
+import express, { Application } from "express";
+import { connectDatabase } from "./database";
 import { typeDefs, resolvers } from "./graphql";
 
-const port = 9000;
-const app = express();
+const { PORT } = process.env;
 
-const server = new ApolloServer({ typeDefs, resolvers });
-server.applyMiddleware({ app, path: "/api" });
+async function start(app: Application, port: number) {
+  const db = await connectDatabase();
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: () => ({ db })
+  });
+  server.applyMiddleware({ app, path: "/api" });
 
-app.listen(port, () => {
-  console.log(`[app] server running http://localhost:${port}`)
-});
+  app.listen(port, async () => {
+    console.log(`[app] server running http://localhost:${port}`)
+
+    //const listings = await db.listings.find({}).toArray();
+    //console.log(listings);
+  });
+}
+
+start(express(), parseInt(PORT || "9000", 10));
