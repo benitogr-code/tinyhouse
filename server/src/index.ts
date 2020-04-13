@@ -1,9 +1,11 @@
+require("dotenv").config();
+
 import { ApolloServer } from "apollo-server-express";
 import express, { Application } from "express";
 import { connectDatabase } from "./database";
 import { typeDefs, resolvers } from "./graphql";
 
-const APP_PORT = 9000;
+const { PORT } = process.env;
 
 async function start(app: Application, port: number) {
   const db = await connectDatabase();
@@ -19,4 +21,4 @@ async function start(app: Application, port: number) {
   });
 }
 
-start(express(), APP_PORT);
+start(express(), parseInt(PORT || "9000", 10));

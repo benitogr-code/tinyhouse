@@ -1,13 +1,14 @@
 import { MongoClient } from "mongodb";
 import { Database } from "../lib/types";
 
-const dbUser = "user";
-const dbUserPwd = "password";
-const dbCluster = "cluster";
+function getConnectionUrl(): string {
+  const { DB_USER, DB_USER_PWD, DB_CLUSTER } = process.env;
 
-const url = `mongodb+srv://${dbUser}:${dbUserPwd}@${dbCluster}.mongodb.net/test?retryWrites=true&w=majority`;
+  return `mongodb+srv://${DB_USER}:${DB_USER_PWD}@${DB_CLUSTER}.mongodb.net/test?retryWrites=true&w=majority`;
+}
 
 export async function connectDatabase(): Promise<Database> {
+  const url = getConnectionUrl();
   const client = await MongoClient.connect(
     url,
     { useNewUrlParser: true, useUnifiedTopology: true}
