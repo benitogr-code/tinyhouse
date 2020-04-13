@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "scripts": {
         "build": "tsc -p ./",
+        "seed": "ts-node -r dotenv/config utils/seed.ts",
         "start": "nodemon -r dotenv/config src/index.ts"
     },
     "dependencies": {
