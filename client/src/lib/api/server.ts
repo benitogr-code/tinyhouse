@@ -3,7 +3,7 @@ interface Body {
 }
 
 export const server = {
-  fetch: async (body: Body) => {
+  fetch: async <TData = any>(body: Body) => {
     const response = await fetch("/api", {
       method: "POST",
       headers: {
@@ -12,6 +12,6 @@ export const server = {
       body: JSON.stringify(body)
     });
 
-    return response.json();
+    return response.json() as Promise<{ data: TData }>;
   }
 };

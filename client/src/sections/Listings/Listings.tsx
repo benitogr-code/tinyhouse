@@ -1,4 +1,5 @@
 import React from "react";
+import { ListingsData } from "./types";
 import { server } from "../../lib/api"
 
 const GraphQLQuery = {
@@ -12,6 +13,7 @@ const GraphQLQuery = {
         price
         numOfGuests
         numOfBeds
+        numOfBaths
         rating
       }
     }
@@ -24,7 +26,7 @@ interface Props {
 
 export const Listings = (props: Props) => {
   const fetchListings = async () => {
-    const { data } = await server.fetch({ query: GraphQLQuery.Listings });
+    const { data } = await server.fetch<ListingsData>({ query: GraphQLQuery.Listings });
     console.log(data);
   };
 
