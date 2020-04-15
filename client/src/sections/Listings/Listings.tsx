@@ -1,5 +1,5 @@
-import React from "react";
-import { DeleteListingData, DeleteListingVariables, ListingsData } from "./types";
+import React, { useState } from "react";
+import { DeleteListingData, DeleteListingVariables, Listing, ListingsData } from "./types";
 import { server } from "../../lib/api"
 
 const GraphQLQuery = {
@@ -32,26 +32,41 @@ interface Props {
 }
 
 export const Listings = (props: Props) => {
+  const [ listings, setListings ] = useState<Listing[]|null>(null);
+
   const fetchListings = async () => {
     const { data } = await server.fetch<ListingsData>({ query: GraphQLQuery.Listings });
-    console.log("Fetch listings:", data);
+    setListings(data.listings);
   };
 
-  const deleteListing = async () => {
-    const { data } = await server.fetch<DeleteListingData, DeleteListingVariables>({
+  const deleteListing = async (id: string) => {
+    await server.fetch<DeleteListingData, DeleteListingVariables>({
       query: GraphQLQuery.DeleteListing,
       variables: {
-        id: "xxx",
+        id
       }
     });
-    console.log("Delete listings", data);
+
+    fetchListings();
   };
+
+  const listingsList =
+    <ul>
+      {
+      listings?.map((listing) => {
+        return (<li key={listing.id}>
+                {listing.title}
+                <button onClick={() => deleteListing(listing.id)}>Delete</button>
+              </li>);
+      })
+      }
+    </ul>
 
   return (
     <div>
       <h2>{props.title}</h2>
+      {listingsList}
       <button onClick={fetchListings}>Query Listings!</button>
-      <button onClick={deleteListing}>Delete Listing!</button>
     </div>
   );
 };
