@@ -1,6 +1,12 @@
+const ns = "api/server"
+
 interface Body<TVariables> {
   query: string;
   variables?: TVariables;
+}
+
+interface Error {
+  message: string;
 }
 
 export const server = {
@@ -13,6 +19,10 @@ export const server = {
       body: JSON.stringify(body)
     });
 
-    return response.json() as Promise<{ data: TData }>;
+    if (!response.ok) {
+      throw new Error(`${ns}:fetch failed to fetch data`);
+    }
+
+    return response.json() as Promise<{ data: TData, errors: Error[] }>;
   }
 };
