@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeleteListingData, DeleteListingVariables, Listing, ListingsData } from "./types";
 import { server } from "../../lib/api"
 
@@ -34,6 +34,10 @@ interface Props {
 export const Listings = (props: Props) => {
   const [ listings, setListings ] = useState<Listing[]|null>(null);
 
+  useEffect(() => {
+    fetchListings();
+  }, []);
+
   const fetchListings = async () => {
     const { data } = await server.fetch<ListingsData>({ query: GraphQLQuery.Listings });
     setListings(data.listings);
@@ -66,7 +70,6 @@ export const Listings = (props: Props) => {
     <div>
       <h2>{props.title}</h2>
       {listingsList}
-      <button onClick={fetchListings}>Query Listings!</button>
     </div>
   );
 };
