@@ -1,6 +1,6 @@
 import React from "react";
 import { DeleteListingData, DeleteListingVariables, ListingsData } from "./types";
-import { server, useQuery } from "../../lib/api"
+import { useMutation, useQuery } from "../../lib/api"
 
 const GraphQLQuery = {
   Listings: `
@@ -33,15 +33,10 @@ interface Props {
 
 export const Listings = (props: Props) => {
   const { data, loading, error, refetch } = useQuery<ListingsData>(GraphQLQuery.Listings);
+  const [ deleteListing, deleteListingState ] = useMutation<DeleteListingData, DeleteListingVariables>(GraphQLQuery.DeleteListing);
 
-  const deleteListing = async (id: string) => {
-    await server.fetch<DeleteListingData, DeleteListingVariables>({
-      query: GraphQLQuery.DeleteListing,
-      variables: {
-        id
-      }
-    });
-
+  const handleDeleteListing = async (id: string) => {
+    await deleteListing({ id });
     refetch();
   };
 
@@ -52,7 +47,7 @@ export const Listings = (props: Props) => {
       listings?.map((listing) => {
         return (<li key={listing.id}>
                 {listing.title}
-                <button onClick={() => deleteListing(listing.id)}>Delete</button>
+                <button onClick={() => handleDeleteListing(listing.id)}>Delete</button>
               </li>);
       })
       }
@@ -66,10 +61,20 @@ export const Listings = (props: Props) => {
     return <h2>Something went wrong! Please, try again later...</h2>
   }
 
+  const deleteListingMessage = deleteListingState.loading
+    ? <h3>Deleting listing...</h3>
+    : null;
+
+  const deleteListingError = deleteListingState.error
+    ? <h3>Something went wrong deleting the listing!</h3>
+    : null;
+
   return (
     <div>
       <h2>{props.title}</h2>
       {listingsList}
+      {deleteListingMessage}
+      {deleteListingError}
     </div>
   );
 };

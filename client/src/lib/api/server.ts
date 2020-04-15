@@ -1,4 +1,4 @@
-const ns = "api/server"
+const ns = "lib/api/server"
 
 interface Body<TVariables> {
   query: string;

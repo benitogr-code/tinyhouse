@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { server } from "./server";
 
-const ns = "api/useQuery";
+const ns = "lib/api/useQuery";
 
 interface State<TData> {
   data: TData | null;
@@ -9,7 +9,14 @@ interface State<TData> {
   error: boolean;
 }
 
-export const useQuery = <TData = any>(query: string) => {
+interface QueryResult<TData> extends State<TData> {
+  refetch: () => void;
+}
+
+export const useQuery = <TData = any>(
+    query: string
+  ): QueryResult<TData> => {
+
   const [ state, setState ] = useState<State<TData>>({
     data: null, loading: false, error: false
   });
@@ -21,14 +28,14 @@ export const useQuery = <TData = any>(query: string) => {
         const { data, errors } = await server.fetch<TData>({ query });
 
         if (errors && errors.length) {
-          throw new Error(`${ns} fetch returned with error "${errors[0].message}"`)
+          throw new Error(`${ns} query returned with error "${errors[0].message}"`)
         }
 
         setState({ data, loading: false, error: false})
       }
       catch(error) {
         setState({ data: null, loading: false, error: true });
-        console.error(error);
+        throw console.error(error);
       }
     };
 
