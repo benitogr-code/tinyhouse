@@ -24,7 +24,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "codegen:schema": "npx apollo client:download-schema --endpoint=http://localhost:9000/api graphql.json",
     "codegen:generate": "npx apollo client:codegen --localSchemaFile=graphql.json --includes=src/**/*.tsx --target=typescript"
   },
