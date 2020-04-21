@@ -9,6 +9,11 @@ A MongoDB database must be provisioned. This database will store the data consum
 - Setup a free tier cluster in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 - Create a Database named **tinyhouse-main** containing a single collection named **test-listings**.
 
+OAuth client credentials from Google to authenticate applications users using Google.
+
+- Go to https://console.developers.google.com and create a new project.
+- Add OAuth client credentials for a web application. Add both the client ID and secret to your .env file.
+
 ## Installation
 
 Run the intall command: `npm install`.
@@ -20,6 +25,9 @@ PORT=9000
 DB_USER=YOUR_DB_USER
 DB_USER_PWD=YOUR_DB_USER_PASSWORD
 DB_CLUSTER=YOUR_DB_CLUSTER
+GOOGLE_CLIENT_ID=YOUR_CLIENT_ID
+GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET
+APP_PUBLIC_URL=http://xxxxxx.com
 ```
 
 Seed sample data into the database: `npm run seed`.
