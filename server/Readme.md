@@ -12,7 +12,8 @@ A MongoDB database must be provisioned. This database will store the data consum
 OAuth client credentials from Google to authenticate applications users using Google.
 
 - Go to https://console.developers.google.com and create a new project.
-- Add OAuth client credentials for a web application. Add both the client ID and secret to your .env file.
+- Add [OAuth](https://developers.google.com/identity/protocols/oauth2/scopes) client credentials for a web application. Add both the client ID and secret to your .env file.
+- Enable [People API](https://developers.google.com/people/api/rest/v1/people/get).
 
 ## Installation
 
