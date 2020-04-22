@@ -69,7 +69,7 @@ export const viewerResolvers: IResolvers = {
     logIn: async (_root: undefined, { input }: LogInArgs, context: { db: Database }): Promise<Viewer> => {
       try {
         const code = input ? input.code : null;
-        const token = crypto.randomBytes(16).toString();
+        const token = crypto.randomBytes(16).toString("hex");
 
         const viewer: User | undefined = code
           ? await logInWithGoogle(code, token, context.db)
