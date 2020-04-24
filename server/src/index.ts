@@ -1,16 +1,20 @@
 import { ApolloServer } from "apollo-server-express";
+import cookieParser from "cookie-parser";
 import express, { Application } from "express";
 import { connectDatabase } from "./database";
 import { typeDefs, resolvers } from "./graphql";
 
-const { PORT } = process.env;
+const { APP_SECRET, PORT } = process.env;
 
 async function start(app: Application, port: number) {
   const db = await connectDatabase();
+
+  app.use(cookieParser(APP_SECRET));
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({ db })
+    context: ({ req, res }) => ({ db, req, res })
   });
   server.applyMiddleware({ app, path: "/api" });
 
