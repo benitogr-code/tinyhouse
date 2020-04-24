@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { Affix, Layout } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { Affix, Layout, Spin } from "antd";
 import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider, useMutation } from "react-apollo";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { AppHeaderSkeleton, ErrorBanner } from "./lib/components";
+import { LogIn as LogInQuery } from "./lib/graphql/mutations";
+import { LogIn as LogInData, LogInVariables } from "./lib/graphql/mutations/__generated__/LogIn";
 import { Viewer } from "./lib/types";
 import {
   AppHeader, Home, Host, Listing, Listings, Login, NotFound, User
@@ -22,9 +25,39 @@ const App = () => {
     didRequest: false
   });
 
+  const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LogInQuery, {
+    onCompleted: (data) => {
+      if (data && data.logIn) {
+        setViewer(data.logIn);
+      }
+    }
+  });
+  const logInRef = useRef(logIn);
+
+  // Login on mount
+  useEffect(() => {
+    logInRef.current();
+  }, []);
+
+  if (!viewer.didRequest && !error) {
+    return (
+      <Layout className="app-skeleton">
+        <AppHeaderSkeleton />
+        <div className="app-skeleton__spin-section">
+          <Spin size="large" tip="Launching Tinyhouse" />
+        </div>
+      </Layout>
+    );
+  }
+
+  const logInErrorBannerElement = error
+  ? <ErrorBanner description="We weren't able to verify if you were logged in. Please try again later!" />
+  : null;
+
   return (
     <BrowserRouter>
       <Layout id="app">
+        {logInErrorBannerElement}
         <Affix offsetTop={0} className="app__affix-header">
           <div>
           <AppHeader viewer={viewer} setViewer={setViewer}/>
