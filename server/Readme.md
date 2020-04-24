@@ -22,13 +22,15 @@ Run the intall command: `npm install`.
 Create a _.env_ file in the root directory and add the following environment variables to it:
 
 ```
+NODE_ENV=development
 PORT=9000
-DB_USER=YOUR_DB_USER
-DB_USER_PWD=YOUR_DB_USER_PASSWORD
-DB_CLUSTER=YOUR_DB_CLUSTER
-GOOGLE_CLIENT_ID=YOUR_CLIENT_ID
-GOOGLE_CLIENT_SECRET=YOUR_CLIENT_SECRET
+DB_USER=xxx
+DB_USER_PWD=xxx
+DB_CLUSTER=xxx
+GOOGLE_CLIENT_ID=xxx
+GOOGLE_CLIENT_SECRET=xxx
 APP_PUBLIC_URL=http://xxxxxx.com
+APP_SECRET=xxx
 ```
 
 Seed sample data into the database: `npm run seed`.
