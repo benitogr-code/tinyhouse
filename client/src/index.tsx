@@ -26,7 +26,9 @@ const App = () => {
     <BrowserRouter>
       <Layout id="app">
         <Affix offsetTop={0} className="app__affix-header">
+          <div>
           <AppHeader viewer={viewer} setViewer={setViewer}/>
+          </div>
         </Affix>
         <Switch>
           <Route exact path="/" component={Home} />
