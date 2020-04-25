@@ -27,8 +27,9 @@ export const Login = (props: Props) => {
     LogInQuery,
     {
       onCompleted: (data) => {
-        if (data && data.logIn) {
+        if (data && data.logIn && data.logIn.token) {
           setViewer(data.logIn);
+          sessionStorage.setItem("token", data.logIn.token);
           displaySuccessNotification("You are logged in!");
         }
       }

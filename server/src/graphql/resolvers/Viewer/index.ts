@@ -6,7 +6,6 @@ import { Google } from "../../../lib/api";
 import { Database, User, Viewer } from "../../../lib/types";
 
 
-const cookieID = "viewer";
 const cookieOptions = {
   httpOnly: true,
   sameSite: true,
@@ -101,17 +100,17 @@ export const viewerResolvers: IResolvers = {
           viewer = await logInWithGoogle(code, token, context.db);
         }
         else {
-          const userId = context.req.signedCookies[cookieID];
+          const userId = context.req.signedCookies.viewer;
           viewer = await logInWithCookie(userId, token, context.db);
         }
 
         if (!viewer) {
-          context.res.clearCookie(cookieID, cookieOptions);
+          context.res.clearCookie("viewer", cookieOptions);
           return { didRequest: true };
         }
 
         if (setCookie)
-          context.res.cookie(cookieID, viewer._id, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 });
+          context.res.cookie("viewer", viewer._id, { ...cookieOptions, maxAge: 7 * 24 * 60 * 60 * 1000 });
 
         return {
           _id: viewer._id,
@@ -127,7 +126,7 @@ export const viewerResolvers: IResolvers = {
     },
     logOut: (_root: undefined, _args: {}, context: { res: Response }): Viewer => {
       try {
-        context.res.clearCookie(cookieID, cookieOptions);
+        context.res.clearCookie("viewer", cookieOptions);
 
         return { didRequest: true };
       }

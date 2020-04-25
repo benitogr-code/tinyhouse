@@ -14,7 +14,17 @@ import {
 import * as serviceWorker from "./serviceWorker";
 import "./styles/index.css";
 
-const client = new ApolloClient({ uri: "/api" });
+const client = new ApolloClient({
+  uri: "/api",
+  request: (operation) => {
+    const token = sessionStorage.getItem("token");
+    operation.setContext({
+      headers: {
+        "X-CSRF-TOKEN": token || "",
+      }
+    });
+  },
+});
 
 const App = () => {
   const [viewer, setViewer] = useState<Viewer>({
@@ -29,6 +39,13 @@ const App = () => {
     onCompleted: (data) => {
       if (data && data.logIn) {
         setViewer(data.logIn);
+
+        if (data.logIn.token) {
+          sessionStorage.setItem("token", data.logIn.token);
+        }
+        else {
+          sessionStorage.removeItem("token");
+        }
       }
     }
   });
