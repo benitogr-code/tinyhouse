@@ -36,7 +36,7 @@ export const typeDefs = gql`
 
   type Listings {
     total: Int!
-    result: [Listings!]!
+    result: [Listing!]!
   }
 
   type User {

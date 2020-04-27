@@ -86,5 +86,6 @@ export const userResolvers: IResolvers = {
       catch (error) {
         throw new Error(`Failed to query user listings: ${error.message}`);
       }
-    }  }
+    }
+  }
 }
