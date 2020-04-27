@@ -38,7 +38,7 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
   ? (
     <Menu.SubMenu title={<Avatar src={avatarUrl}/>}>
       <Menu.Item key="/user">
-        <Link to={`user/${viewer.id}`}>
+        <Link to={`/user/${viewer.id}`}>
           <Icon type="user" />
           Profile
         </Link>
