@@ -724,7 +724,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "Listings",
+                    "name": "Listing",
                     "ofType": null
                   }
                 }
