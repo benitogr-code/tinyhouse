@@ -15,7 +15,7 @@ export const typeDefs = gql`
   }
 
   enum ListingType {
-    APARTMNET
+    APARTMENT
     HOUSE
   }
 
@@ -64,6 +64,7 @@ export const typeDefs = gql`
 
   type Query {
     authUrl: String!
+    listing(id: ID!): Listing!
     user(id: ID!): User!
   }
 
