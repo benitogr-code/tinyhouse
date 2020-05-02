@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { Col, Layout, Row } from "antd";
-import { ListingBookings, ListingDetails } from "./components";
+import { ListingBookings, ListingCreateBooking, ListingDetails } from "./components";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
 import { Listing as ListingQuery } from "../../lib/graphql/queries";
 import { Listing as ListingData, ListingVariables } from "../../lib/graphql/queries/__generated__/Listing";
@@ -55,12 +55,17 @@ export const Listing = (props: RouteComponentProps<MatchParams>) => {
   )
   : null;
 
+  const listingCreateBookingElement = listing ? <ListingCreateBooking price={listing.price}/> : null;
+
   return (
     <Layout.Content className="listings">
       <Row gutter={24} type="flex" justify="space-between">
         <Col xs={24} lg={14}>
           {listingDetailsElement}
           {listingBookingsElement}
+        </Col>
+        <Col xs={24} lg={10}>
+          {listingCreateBookingElement}
         </Col>
       </Row>
     </Layout.Content>
