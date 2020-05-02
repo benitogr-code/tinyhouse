@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { Col, Layout, Row } from "antd";
+import { Moment } from "moment";
 import { ListingBookings, ListingCreateBooking, ListingDetails } from "./components";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
 import { Listing as ListingQuery } from "../../lib/graphql/queries";
@@ -13,7 +14,10 @@ interface MatchParams {
 
 export const Listing = (props: RouteComponentProps<MatchParams>) => {
   const pageLimit = 3;
+
   const [bookingsPage, setBookingsPage] = useState(1);
+  const [checkInDate, setCheckInDate] = useState<Moment|null>(null);
+  const [checkOutDate, setCheckOutDate] = useState<Moment|null>(null);
 
   const { data, loading, error } = useQuery<ListingData, ListingVariables>(ListingQuery, {
     variables: {
@@ -52,10 +56,18 @@ export const Listing = (props: RouteComponentProps<MatchParams>) => {
       limit={pageLimit}
       setPage={setBookingsPage}
     />
-  )
-  : null;
+  ) : null;
 
-  const listingCreateBookingElement = listing ? <ListingCreateBooking price={listing.price}/> : null;
+  const listingCreateBookingElement = listing
+  ? (
+    <ListingCreateBooking
+      price={listing.price}
+      checkInDate={checkInDate}
+      checkOutDate={checkOutDate}
+      setCheckInDate={setCheckInDate}
+      setCheckOutDate={setCheckOutDate}
+    />
+  ) : null;
 
   return (
     <Layout.Content className="listings">
