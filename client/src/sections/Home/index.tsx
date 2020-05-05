@@ -1,14 +1,25 @@
 import React from "react";
 import { RouteComponentProps, Link } from "react-router-dom";
+import { useQuery } from "react-apollo";
 import { Col, Layout, Row, Typography } from "antd";
+import { Listings as ListingsQuery } from "../../lib/graphql/queries";
+import { Listings as ListingsData, ListingsVariables } from "../../lib/graphql/queries/__generated__/Listings";
+import { ListingsFilter } from "../../lib/graphql/globalTypes";
 import { displayErrorMessage } from "../../lib/utils";
-import { HomeHero } from "./components";
+import { HomeHero, HomeListings, HomeListingsSkeleton } from "./components";
 
 import mapBackground from "./assets/map-background.jpg";
 import imgSanFransisco from "./assets/san-fransisco.jpg";
 import imgCancun from "./assets/cancun.jpg";
 
 export const Home = (props: RouteComponentProps) => {
+  const { data, loading } = useQuery<ListingsData, ListingsVariables>(ListingsQuery, {
+    variables: {
+      filter: ListingsFilter.PRICE_HIGH_TO_LOW,
+      limit: 4,
+      page: 1
+    }
+  });
 
   const onSearch = (value: string) => {
     const { history } = props;
@@ -21,6 +32,14 @@ export const Home = (props: RouteComponentProps) => {
       displayErrorMessage("Please enter a valid search!");
     }
   };
+
+  let listingsSection = null;
+  if (loading) {
+    listingsSection = <HomeListingsSkeleton />;
+  }
+  else if (data) {
+    listingsSection = <HomeListings title="Premium Listings" listings={data.listings.result} />
+  }
 
   return (
     <Layout.Content className="home" style={{ backgroundImage: `url(${mapBackground})` }}>
@@ -40,6 +59,8 @@ export const Home = (props: RouteComponentProps) => {
           Popular listings in the United States
         </Link>
       </div>
+
+      {listingsSection}
 
       <div className="home__listings">
         <Typography.Title level={4} className="home__listings-title">
