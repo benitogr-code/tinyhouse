@@ -1,7 +1,9 @@
 import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
 import { ObjectId } from "mongodb";
-import { ListingArgs, ListingBookingsArgs, ListingBookingsData } from "./types";
+import {
+  ListingArgs, ListingBookingsArgs, ListingBookingsData, ListingsArgs, ListingsData, ListingsFilters
+} from "./types";
 import { Database, Listing, User } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
 
@@ -10,7 +12,7 @@ export const listingResolvers: IResolvers = {
     listing: async (
       _root: undefined,
       args: ListingArgs,
-      context: { db: Database, req: Request }
+      context: { db: Database; req: Request }
     ): Promise<Listing> => {
       const { db, req } = context;
       const listing = await db.listings.findOne({ _id: new ObjectId(args.id) })
@@ -25,6 +27,39 @@ export const listingResolvers: IResolvers = {
       }
 
       return listing;
+    },
+    listings: async (
+      _root: undefined,
+      args: ListingsArgs,
+      context: { db: Database }
+    ): Promise<ListingsData> => {
+      try {
+        const data: ListingsData = {
+          total: 0,
+          result: [],
+        };
+
+        const { db } = context;
+        let cursor = await db.listings.find({});
+
+        if (args.filter === ListingsFilters.PriceHighest) {
+          cursor = cursor.sort({ price: -1 });
+        }
+        else if (args.filter === ListingsFilters.PriceLowest) {
+          cursor = cursor.sort({ price: 1 });
+        }
+
+        cursor.skip(args.page > 0 ? (args.page - 1) * args.limit : 0);
+        cursor.limit(args.limit);
+
+        data.total = await cursor.count();
+        data.result = await cursor.toArray();
+
+        return data;
+      }
+      catch (error) {
+        throw new Error(`Failed to query listings: ${error.message}`);
+      }
     }
   },
   Listing: {
