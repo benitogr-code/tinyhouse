@@ -15,6 +15,11 @@ OAuth client credentials from Google to authenticate applications users using Go
 - Add [OAuth](https://developers.google.com/identity/protocols/oauth2/scopes) client credentials for a web application. Add both the client ID and secret to your .env file.
 - Enable [People API](https://developers.google.com/people/api/rest/v1/people/get).
 
+Google Geocoding API
+
+- This API must be enabled at https://console.developers.google.com.
+- An application key must be created and added to the .env file.
+
 ## Installation
 
 Run the intall command: `npm install`.
@@ -29,6 +34,7 @@ DB_USER_PWD=xxx
 DB_CLUSTER=xxx
 GOOGLE_CLIENT_ID=xxx
 GOOGLE_CLIENT_SECRET=xxx
+GOOGLE_GEOCODING_API_KEY=xxx
 APP_PUBLIC_URL=http://xxxxxx.com
 APP_SECRET=xxx
 ```

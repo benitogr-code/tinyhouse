@@ -33,6 +33,8 @@ export const typeDefs = gql`
     type: ListingType!
     address: String!
     city: String!
+    admin: String!
+    country: String!
     bookings(limit: Int!, page: Int!): Bookings
     bookingsIndex: String!
     price: Int!
@@ -42,6 +44,7 @@ export const typeDefs = gql`
   type Listings {
     total: Int!
     result: [Listing!]!
+    region: String
   }
 
   type User {
@@ -70,7 +73,7 @@ export const typeDefs = gql`
   type Query {
     authUrl: String!
     listing(id: ID!): Listing!
-    listings(filter: ListingsFilter!, limit: Int!, page: Int!): Listings!
+    listings(location: String, filter: ListingsFilter!, limit: Int!, page: Int!): Listings!
     user(id: ID!): User!
   }
 

@@ -2,8 +2,9 @@ import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
 import { ObjectId } from "mongodb";
 import {
-  ListingArgs, ListingBookingsArgs, ListingBookingsData, ListingsArgs, ListingsData, ListingsFilters
+  ListingArgs, ListingBookingsArgs, ListingBookingsData, ListingsArgs, ListingsData, ListingsFilters, ListingsQuery
 } from "./types";
+import { Google } from "../../../lib/api";
 import { Database, Listing, User } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
 
@@ -34,13 +35,34 @@ export const listingResolvers: IResolvers = {
       context: { db: Database }
     ): Promise<ListingsData> => {
       try {
+        const query: ListingsQuery = {};
         const data: ListingsData = {
           total: 0,
           result: [],
+          region: null,
         };
 
+        if (args.location) {
+          const geoInfo = await Google.geocode(args.location);
+          if (geoInfo.admin)
+            query.admin = geoInfo.admin;
+
+          if (geoInfo.city)
+            query.city = geoInfo.city;
+
+          if (geoInfo.country)
+            query.country = geoInfo.country;
+          else
+            throw new Error("No country found for location");
+
+          const cityText = geoInfo.city ? `${geoInfo.city}, ` : "";
+          const adminText = geoInfo.admin ? `${geoInfo.admin}, ` : "";
+
+          data.region = `${cityText}${adminText}${geoInfo.country}`;
+        }
+
         const { db } = context;
-        let cursor = await db.listings.find({});
+        let cursor = await db.listings.find(query);
 
         if (args.filter === ListingsFilters.PriceHighest) {
           cursor = cursor.sort({ price: -1 });
@@ -58,7 +80,7 @@ export const listingResolvers: IResolvers = {
         return data;
       }
       catch (error) {
-        throw new Error(`Failed to query listings: ${error.message}`);
+        throw new Error(`Failed to query listings: ${error.stack}`);
       }
     }
   },
