@@ -9,7 +9,7 @@ import { LogIn as LogInQuery } from "./lib/graphql/mutations";
 import { LogIn as LogInData, LogInVariables } from "./lib/graphql/mutations/__generated__/LogIn";
 import { Viewer } from "./lib/types";
 import {
-  AppHeader, Home, Host, Listing, Listings, Login, NotFound, User
+  AppHeader, Home, Host, Listing, Listings, Login, NotFound, Stripe, User
 } from "./sections";
 import * as serviceWorker from "./serviceWorker";
 import "./styles/index.css";
@@ -88,7 +88,11 @@ const App = () => {
           <Route
             exact
             path="/login"
-            render={props => <Login {...props} setViewer={setViewer}></Login>} />
+            render={props => <Login {...props} setViewer={setViewer} />} />
+          <Route
+            exact
+            path="/stripe"
+            render={props => <Stripe {...props} viewer={viewer} setViewer={setViewer} />} />
           <Route
             exact
             path="/user/:id"

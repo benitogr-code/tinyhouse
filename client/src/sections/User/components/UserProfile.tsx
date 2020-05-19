@@ -7,8 +7,15 @@ interface Props {
   viewerIsUser: boolean;
 }
 
+const { REACT_APP_STRIPE_CLIENT_ID } = process.env;
+const stripeAuthUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${REACT_APP_STRIPE_CLIENT_ID}&scope=read_write`;
+
 export const UserProfile = (props: Props) => {
   const { user, viewerIsUser } = props;
+
+  const redirectToStripe = () => {
+    window.location.href = stripeAuthUrl;
+  }
 
   const additionalDetails = viewerIsUser ? (
     <Fragment>
@@ -18,7 +25,7 @@ export const UserProfile = (props: Props) => {
         <Typography.Paragraph>
           Interested in becoming a TinyHouse host? Register with your Stripe account!
         </Typography.Paragraph>
-        <Button type="primary" className="user-profile__details-cta">
+        <Button type="primary" className="user-profile__details-cta" onClick={redirectToStripe}>
           Connect with Stripe!
         </Button>
         <Typography.Paragraph type="secondary">
