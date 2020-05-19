@@ -20,6 +20,11 @@ Google Geocoding API
 - This API must be enabled at https://console.developers.google.com.
 - An application key must be created and added to the .env file.
 
+Stripe Payments
+
+- Create a test account at https://dashboard.stripe.com.
+- Enable 'Connect' service and get the provided test public/ secret keys which will be used in the .env config file.
+
 ## Installation
 
 Run the intall command: `npm install`.
@@ -37,6 +42,7 @@ GOOGLE_CLIENT_SECRET=xxx
 GOOGLE_GEOCODING_API_KEY=xxx
 APP_PUBLIC_URL=http://xxxxxx.com
 APP_SECRET=xxx
+STRIPE_SECRET=xxx
 ```
 
 Seed sample data into the database: `npm run seed`.
