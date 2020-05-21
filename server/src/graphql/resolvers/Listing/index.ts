@@ -2,11 +2,28 @@ import { IResolvers } from "apollo-server-express";
 import { Request } from "express";
 import { ObjectId } from "mongodb";
 import {
-  ListingArgs, ListingBookingsArgs, ListingBookingsData, ListingsArgs, ListingsData, ListingsFilters, ListingsQuery
+  HostListingArgs, HostListingInput,
+  ListingArgs, ListingBookingsArgs, ListingBookingsData,
+  ListingsArgs, ListingsData, ListingsFilters, ListingsQuery
 } from "./types";
 import { Google } from "../../../lib/api";
-import { Database, Listing, User } from "../../../lib/types";
+import { Database, Listing, ListingType, User } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
+
+function verifyHostListingInput(input: HostListingInput) {
+  if (input.title.length > 100) {
+    throw new Error("Listing title must be under 100 characters");
+  }
+  if (input.description.length > 5000) {
+    throw new Error("Listing description must be under 5000 characters");
+  }
+  if (input.type !== ListingType.Apartment && input.type !== ListingType.House) {
+    throw new Error("Listing type must be either an apartment or house");
+  }
+  if (input.price < 0) {
+    throw new Error("Listing price must be greater than 0");
+  }
+}
 
 export const listingResolvers: IResolvers = {
   Query: {
@@ -85,8 +102,44 @@ export const listingResolvers: IResolvers = {
     }
   },
   Mutation: {
-    hostListing: () => {
-      return "Mutation.hostListing";
+    hostListing: async (
+      _root: undefined,
+      args: HostListingArgs,
+      context: { db: Database; req: Request }): Promise<Listing> => {
+        const { input } = args;
+        verifyHostListingInput(input);
+
+        const { db, req } = context;
+        const viewer = await authorize(req, db);
+
+        if (!viewer) {
+          throw new Error("Viewer could not be found");
+        }
+
+        const { country, admin, city } = await Google.geocode(input.address);
+        if (!country || !admin || !city) {
+          throw new Error("Invalid address input");
+        }
+
+        const insertResult = await db.listings.insertOne({
+          _id: new ObjectId(),
+          ...input,
+          bookings: [],
+          bookingsIndex: {},
+          country,
+          admin,
+          city,
+          host: viewer._id
+        });
+
+        const newListing: Listing = insertResult.ops[0];
+
+        await db.users.updateOne(
+          { _id: viewer._id },
+          { $push: { listings: newListing._id } }
+        );
+
+        return newListing;
     }
   },
   Listing: {
