@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-express";
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
 import { connectDatabase } from "./database";
@@ -9,6 +10,7 @@ const { APP_SECRET, PORT } = process.env;
 async function start(app: Application, port: number) {
   const db = await connectDatabase();
 
+  app.use(bodyParser({ limit: "2mb" }));
   app.use(cookieParser(APP_SECRET));
 
   const server = new ApolloServer({

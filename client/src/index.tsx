@@ -9,7 +9,8 @@ import { LogIn as LogInQuery } from "./lib/graphql/mutations";
 import { LogIn as LogInData, LogInVariables } from "./lib/graphql/mutations/__generated__/LogIn";
 import { Viewer } from "./lib/types";
 import {
-  AppHeader, Home, Host, Listing, Listings, Login, NotFound, Stripe, User
+  AppHeader, Home, WrappedHost as Host,
+  Listing, Listings, Login, NotFound, Stripe, User
 } from "./sections";
 import * as serviceWorker from "./serviceWorker";
 import "./styles/index.css";
