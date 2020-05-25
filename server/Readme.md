@@ -43,6 +43,9 @@ GOOGLE_GEOCODING_API_KEY=xxx
 APP_PUBLIC_URL=http://xxxxxx.com
 APP_SECRET=xxx
 STRIPE_SECRET=xxx
+CLOUDINARY_NAME=xxx
+CLOUDINARY_API_KEY=xxx
+CLOUDINARY_API_SECRET=xxx
 ```
 
 Seed sample data into the database: `npm run seed`.

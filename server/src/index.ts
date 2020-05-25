@@ -10,7 +10,7 @@ const { APP_SECRET, PORT } = process.env;
 async function start(app: Application, port: number) {
   const db = await connectDatabase();
 
-  app.use(bodyParser({ limit: "2mb" }));
+  app.use(bodyParser.json({ limit: "2mb" }));
   app.use(cookieParser(APP_SECRET));
 
   const server = new ApolloServer({
