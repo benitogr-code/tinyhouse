@@ -7,12 +7,17 @@ import { ListingBookings, ListingCreateBooking, ListingDetails } from "./compone
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
 import { Listing as ListingQuery } from "../../lib/graphql/queries";
 import { Listing as ListingData, ListingVariables } from "../../lib/graphql/queries/__generated__/Listing";
+import { Viewer } from "../../lib/types";
 
 interface MatchParams {
   id: string;
 }
 
-export const Listing = (props: RouteComponentProps<MatchParams>) => {
+interface Props {
+  viewer: Viewer;
+}
+
+export const Listing = (props: Props & RouteComponentProps<MatchParams>) => {
   const pageLimit = 3;
 
   const [bookingsPage, setBookingsPage] = useState(1);
@@ -61,6 +66,9 @@ export const Listing = (props: RouteComponentProps<MatchParams>) => {
   const listingCreateBookingElement = listing
   ? (
     <ListingCreateBooking
+      viewer={props.viewer}
+      host={listing.host}
+      bookingsIndex={listing.bookingsIndex}
       price={listing.price}
       checkInDate={checkInDate}
       checkOutDate={checkOutDate}
