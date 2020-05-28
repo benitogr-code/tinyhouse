@@ -1,4 +1,5 @@
 import React from "react";
+import { CardElement, injectStripe, ReactStripeElements } from "react-stripe-elements";
 import { Button, Divider, Icon, Typography, Modal } from "antd";
 import { Moment } from "moment";
 import { formatListingPrice } from "../../../lib/utils";
@@ -11,9 +12,18 @@ interface Props {
   setVisible: (visible: boolean) => void;
 }
 
-export const ListingCreateBookingModal = (props: Props) => {
+const ListingCreateBookingModal = (props: Props & ReactStripeElements.InjectedStripeProps) => {
   const bookedDays = props.checkOutDate.diff(props.checkInDate, "days") + 1;
   const listingPrice = props.price * bookedDays;
+
+  const handleCreateBooking = async () => {
+    if (!props.stripe) return;
+
+    const { stripe } = props;
+    const { token } = await stripe.createToken();
+
+    console.log("Create booking token:", token);
+  }
 
   return (
     <Modal
@@ -58,7 +68,8 @@ export const ListingCreateBookingModal = (props: Props) => {
         <Divider />
 
         <div className="listing-booking-modal__stripe-card-section">
-          <Button size="large" type="primary" className="listing-booking-modal__cta">
+          <CardElement hidePostalCode className="listing-booking-modal__stripe-card"/>
+          <Button size="large" type="primary" className="listing-booking-modal__cta" onClick={handleCreateBooking}>
             Book
           </Button>
         </div>
@@ -66,3 +77,5 @@ export const ListingCreateBookingModal = (props: Props) => {
     </Modal>
   );
 };
+
+export const WrappedListingCreateBookingModal = injectStripe(ListingCreateBookingModal);
