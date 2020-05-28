@@ -15,6 +15,7 @@ interface Props {
   checkOutDate: Moment|null;
   setCheckInDate: (date: Moment|null) => void;
   setCheckOutDate: (date: Moment|null) => void;
+  setModalVisible: (visible: boolean) => void;
 }
 
 export const ListingCreateBooking = (props: Props) => {
@@ -22,6 +23,7 @@ export const ListingCreateBooking = (props: Props) => {
   const { viewer, host } = props;
   const { checkInDate, setCheckInDate } = props;
   const { checkOutDate, setCheckOutDate } = props;
+  const { setModalVisible } = props;
 
   const viewerIsHost = viewer.id === host.id;
   const disableCheckInDate = !viewer.id || viewerIsHost || !host.hasWallet;
@@ -117,7 +119,13 @@ export const ListingCreateBooking = (props: Props) => {
           </div>
         </div>
         <Divider />
-        <Button disabled={disableButton} size="large" type="primary" className="listing-booking__card-cta">
+        <Button
+          disabled={disableButton}
+          size="large"
+          type="primary"
+          className="listing-booking__card-cta"
+          onClick={() => setModalVisible(true)}
+        >
           Request to book!
         </Button>
         <Typography.Text type="secondary" mark>{buttonMessage}</Typography.Text>
