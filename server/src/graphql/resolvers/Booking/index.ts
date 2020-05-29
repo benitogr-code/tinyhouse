@@ -124,7 +124,6 @@ export const bookingResolvers: IResolvers = {
           return booking;
         }
         catch (error) {
-          console.error("createBooking:", error);
           throw new Error(`Failed to create booking: ${error.message}`)
         }
     }
