@@ -73,7 +73,8 @@ export const bookingResolvers: IResolvers = {
 
           const bookingsIndex = resolveBookingsIndex(listing.bookingsIndex, input.checkIn, input.checkOut);
 
-          const totalPrice = listing.price * (((checkOutDate.getTime() - checkInDate.getTime()) / DAY_IN_MS) + 1);
+          const bookedDays = ((checkOutDate.getTime() - checkInDate.getTime()) / DAY_IN_MS) + 1;
+          const totalPrice = Math.round(listing.price * bookedDays);
 
           const host = await db.users.findOne({ _id: listing.host });
           if (!host || !host.walletId) {
@@ -85,7 +86,7 @@ export const bookingResolvers: IResolvers = {
           const insertRes = await db.bookings.insertOne({
             _id: new ObjectId(),
             listing: listing._id,
-            tenant: new ObjectId(viewer._id),
+            tenant: viewer._id,
             checkIn: input.checkIn,
             checkOut: input.checkOut,
           });
@@ -123,6 +124,7 @@ export const bookingResolvers: IResolvers = {
           return booking;
         }
         catch (error) {
+          console.error("createBooking:", error);
           throw new Error(`Failed to create booking: ${error.message}`)
         }
     }
@@ -137,7 +139,7 @@ export const bookingResolvers: IResolvers = {
     },
     tenant: async (booking: Booking, args: {}, context: { db: Database }): Promise<User|null> => {
       const { db } = context;
-      return await db.users.findOne({ _id: booking.tenant.toString() });
+      return await db.users.findOne({ _id: booking.tenant });
     }
   }
 };

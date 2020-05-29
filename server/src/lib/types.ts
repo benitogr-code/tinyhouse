@@ -16,7 +16,7 @@ export enum ListingType {
 export interface Booking {
   _id: ObjectId;
   listing: ObjectId;
-  tenant: ObjectId;
+  tenant: string;
   checkIn: string;
   checkOut: string;
 }

@@ -9,7 +9,7 @@ import { Viewer } from "../../../lib/types";
 
 interface Props {
   user: UserData["user"];
-  refetchUser: () => void;
+  refetchUser: () => Promise<void>;
   viewer: Viewer;
   setViewer: (viewer: Viewer) => void;
   viewerIsUser: boolean;
