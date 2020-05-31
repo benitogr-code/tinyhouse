@@ -2,7 +2,7 @@
 
 This repository contains the code for the application developed in the **Tiny House** masterclass (Part 1) available at [newline.co](https://www.newline.co/tinyhouse).
 
-![](_res/tinyhouse-v1.png)
+![](_assets/tinyhouse-v1.png)
 
 ### Server
 

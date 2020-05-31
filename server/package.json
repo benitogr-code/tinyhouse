@@ -6,8 +6,8 @@
     },
     "scripts": {
         "build": "tsc -p ./",
-        "db:seed": "ts-node -r dotenv/config utils/seedDb.ts",
-        "db:clear": "ts-node -r dotenv/config utils/clearDb.ts",
+        "db:seed": "ts-node -r dotenv/config src/_utils/seedDb.ts",
+        "db:clear": "ts-node -r dotenv/config src/_utils/clearDb.ts",
         "start": "nodemon -r dotenv/config src/index.ts"
     },
     "dependencies": {

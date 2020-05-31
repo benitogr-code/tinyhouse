@@ -1,4 +1,4 @@
-import { connectDatabase } from "../src/database";
+import { connectDatabase } from "../database";
 
 async function clearDb() {
   try {
