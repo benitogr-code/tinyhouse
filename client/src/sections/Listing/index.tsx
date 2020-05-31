@@ -12,6 +12,7 @@ import {
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
 import { Listing as ListingQuery } from "../../lib/graphql/queries";
 import { Listing as ListingData, ListingVariables } from "../../lib/graphql/queries/__generated__/Listing";
+import { useScrollToTop } from "../../lib/hooks";
 import { Viewer } from "../../lib/types";
 
 interface MatchParams {
@@ -37,6 +38,8 @@ export const Listing = (props: Props & RouteComponentProps<MatchParams>) => {
       limit: pageLimit
     }
   });
+
+  useScrollToTop();
 
   const clearBookingData = () => {
     setModalVisible(false);

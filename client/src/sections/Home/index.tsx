@@ -5,6 +5,7 @@ import { Col, Layout, Row, Typography } from "antd";
 import { Listings as ListingsQuery } from "../../lib/graphql/queries";
 import { Listings as ListingsData, ListingsVariables } from "../../lib/graphql/queries/__generated__/Listings";
 import { ListingsFilter } from "../../lib/graphql/globalTypes";
+import { useScrollToTop } from "../../lib/hooks";
 import { displayErrorMessage } from "../../lib/utils";
 import { HomeHero, HomeListings, HomeListingsSkeleton } from "./components";
 
@@ -18,8 +19,11 @@ export const Home = (props: RouteComponentProps) => {
       filter: ListingsFilter.PRICE_HIGH_TO_LOW,
       limit: 4,
       page: 1
-    }
+    },
+    fetchPolicy: "cache-and-network"
   });
+
+  useScrollToTop();
 
   const onSearch = (value: string) => {
     const { history } = props;

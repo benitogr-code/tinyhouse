@@ -7,6 +7,7 @@ import { ErrorBanner, ListingCard } from "../../lib/components";
 import { Listings as ListingsQuery } from "../../lib/graphql/queries";
 import { Listings as ListingsData, ListingsVariables } from "../../lib/graphql/queries/__generated__/Listings";
 import { ListingsFilter } from "../../lib/graphql/globalTypes";
+import { useScrollToTop } from "../../lib/hooks";
 
 interface MatchParams {
   location: string;
@@ -33,6 +34,8 @@ export const Listings = (props: RouteComponentProps<MatchParams>) => {
     setPage(1);
     locationRef.current = props.match.params.location;
   }, [props.match.params.location]);
+
+  useScrollToTop();
 
   if (loading) {
     return (

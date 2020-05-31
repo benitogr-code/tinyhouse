@@ -8,6 +8,7 @@ import { LogIn as LogInQuery } from "../../lib/graphql/mutations";
 import { LogIn as LogInData, LogInVariables } from "../../lib/graphql/mutations/__generated__/LogIn";
 import { AuthUrl as AuthUrlQuery } from "../../lib/graphql/queries";
 import { AuthUrl as AuthUrlData } from "../../lib/graphql/queries/__generated__/AuthUrl";
+import { useScrollToTop } from "../../lib/hooks";
 import { Viewer } from "../../lib/types";
 import { displaySuccessNotification, displayErrorMessage } from "../../lib/utils";
 
@@ -48,6 +49,8 @@ export const Login = (props: Props) => {
       });
     }
   }, []);
+
+  useScrollToTop();
 
   // Get authUrl and redirects to it
   const handleAuthorize = async () => {

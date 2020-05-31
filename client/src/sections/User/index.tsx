@@ -6,6 +6,7 @@ import { UserBookings, UserListings, UserProfile } from "./components";
 import { User as UserQuery } from "../../lib/graphql/queries";
 import { User as UserData, UserVariables } from "../../lib/graphql/queries/__generated__/User";
 import { ErrorBanner, PageSkeleton } from "../../lib/components";
+import { useScrollToTop } from "../../lib/hooks";
 import { Viewer } from "../../lib/types";
 
 interface Props {
@@ -29,12 +30,15 @@ export const User = (props: Props & RouteComponentProps<MatchParams>) => {
       bookingsPage,
       listingsPage,
       limit: pageLimit
-    }
+    },
+    fetchPolicy: "cache-and-network"
   });
 
   const handleUserRefetch = async () => {
     await refetch();
   };
+
+  useScrollToTop();
 
   const stripeError = new URL(window.location.href).searchParams.get("stripe_error");
   const stripeErrorBanner = stripeError

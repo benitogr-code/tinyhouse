@@ -4,6 +4,7 @@ import { useMutation } from "react-apollo";
 import { Layout, Spin } from "antd";
 import { ConnectStripe as ConnectStripeQuery } from "../../lib/graphql/mutations";
 import { ConnectStripe as ConnectStripeData, ConnectStripeVariables } from "../../lib/graphql/mutations/__generated__/ConnectStripe";
+import { useScrollToTop } from "../../lib/hooks";
 import { Viewer } from "../../lib/types";
 import { displaySuccessNotification } from "../../lib/utils";
 
@@ -42,6 +43,8 @@ export const Stripe = (props: Props & RouteComponentProps) => {
       props.history.replace("/login");
     }
   }, [props.history]);
+
+  useScrollToTop();
 
   if (loading) {
     return (
