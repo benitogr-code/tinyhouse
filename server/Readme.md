@@ -7,7 +7,7 @@ The server application exposes a GraphQL API using Express and Apollo packages.
 A MongoDB database must be provisioned. This database will store the data consumed by the API.
 
 - Setup a free tier cluster in [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-- Create a Database named **tinyhouse-main** containing a single collection named **test-listings**.
+- Create a Database named **tinyhouse-main** containing a 3 collections named **bookings**, **listings** and **users**.
 
 OAuth client credentials from Google to authenticate applications users using Google.
 
@@ -40,7 +40,7 @@ DB_CLUSTER=xxx
 GOOGLE_CLIENT_ID=xxx
 GOOGLE_CLIENT_SECRET=xxx
 GOOGLE_GEOCODING_API_KEY=xxx
-APP_PUBLIC_URL=http://xxxxxx.com
+APP_PUBLIC_URL=http://localhost:3000
 APP_SECRET=xxx
 STRIPE_SECRET=xxx
 CLOUDINARY_NAME=xxx
