@@ -1,6 +1,9 @@
 {
     "name": "tinyhouse-server",
     "version": "1.0.0",
+    "engines": {
+        "node": "12.16.2"
+    },
     "scripts": {
         "build": "tsc -p ./",
         "db:seed": "ts-node -r dotenv/config utils/seedDb.ts",
@@ -12,6 +15,7 @@
         "apollo-server-express": "^2.12.0",
         "body-parser": "^1.19.0",
         "cloudinary": "^1.21.0",
+        "compression": "^1.7.4",
         "cookie-parser": "^1.4.5",
         "express": "^4.17.1",
         "googleapis": "^49.0.0",
@@ -22,6 +26,7 @@
     },
     "devDependencies": {
         "@types/body-parser": "^1.19.0",
+        "@types/compression": "^1.7.0",
         "@types/cookie-parser": "^1.4.2",
         "@types/dotenv": "^8.2.0",
         "@types/express": "^4.17.5",
