@@ -1,6 +1,6 @@
 import stripe from "stripe";
 
-const { STRIPE_SECRET } = process.env;
+const { STRIPE_CLIENT_ID, STRIPE_SECRET } = process.env;
 
 const client = new stripe(`${STRIPE_SECRET}`, { apiVersion: "2020-03-02" });
 
@@ -17,6 +17,16 @@ export const Stripe = {
     }
 
     return res;
+  },
+  disconnect: async (stripeUserId: string) => {
+    /* eslint-disable @typescript-eslint/camelcase */
+    const response = await client.oauth.deauthorize({
+      client_id: `${STRIPE_CLIENT_ID}`,
+      stripe_user_id: stripeUserId
+    });
+    /* eslint-enable @typescript-eslint/camelcase */
+
+    return response;
   },
   charge: async (amount: number, source: string, stripeAccount: string) => {
     /* eslint-disable @typescript-eslint/camelcase */

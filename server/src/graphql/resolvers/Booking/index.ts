@@ -64,8 +64,17 @@ export const bookingResolvers: IResolvers = {
             throw new Error("Host cannot book their own listing");
           }
 
+          const today = new Date();
           const checkInDate = new Date(input.checkIn);
           const checkOutDate = new Date(input.checkOut);
+
+          if (checkInDate.getTime() > (today.getTime() + (90 * DAY_IN_MS))) {
+            throw new Error("check in date can't be more than 90 days from today");
+          }
+
+          if (checkOutDate.getTime() > (today.getTime() + (90 * DAY_IN_MS))) {
+            throw new Error("check out date can't be more than 90 days from today");
+          }
 
           if (checkOutDate < checkInDate) {
             throw new Error("CheckOut date cannot be before CheckIn date");
