@@ -1,4 +1,4 @@
-## Tiny House - Masterclass
+## Tiny House
 
 This repository contains the code for the application developed in the **Tiny House** masterclass available at [newline.co](https://www.newline.co/tinyhouse).
 
