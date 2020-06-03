@@ -1,6 +1,6 @@
 {
   "name": "tinyhouse-client",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -11,13 +11,18 @@
     "@types/node": "^12.12.35",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
-    "antd": "^4.1.3",
+    "@types/react-router-dom": "^5.1.4",
+    "@types/react-stripe-elements": "^6.0.4",
+    "antd": "^3.26.15",
     "apollo-boost": "^0.4.7",
     "graphql": "^15.0.0",
+    "moment": "2.24.0",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-stripe-elements": "^6.1.2",
     "typescript": "^3.7.5"
   },
   "scripts": {
@@ -25,7 +30,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "codegen:schema": "npx apollo client:download-schema --endpoint=http://localhost:9000/api graphql.json",
-    "codegen:generate": "npx apollo client:codegen --localSchemaFile=graphql.json --includes=src/**/*.tsx --target=typescript"
+    "codegen:generate": "npx apollo client:codegen --localSchemaFile=graphql.json --includes=src/**/*.ts --globalTypesFile=src/lib/graphql/globalTypes.ts --target=typescript"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { Database } from "../lib/types";
+import { Database, Booking, Listing, User } from "../lib/types";
 
 function getConnectionUrl(): string {
   const { DB_USER, DB_USER_PWD, DB_CLUSTER } = process.env;
@@ -17,6 +17,8 @@ export async function connectDatabase(): Promise<Database> {
   const db = client.db("tinyhouse-main");
 
   return {
-    listings: db.collection("test-listings")
+    bookings: db.collection<Booking>("bookings"),
+    listings: db.collection<Listing>("listings"),
+    users: db.collection<User>("users")
   };
 }

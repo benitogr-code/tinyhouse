@@ -1,26 +1,37 @@
-import { Alert, Divider, Skeleton } from "antd";
 import React from "react";
-import "./styles/ListingsSkeleton.css";
+import { Card, List, Skeleton } from "antd";
 
-interface Props {
-  title: string;
-  error?: boolean;
-}
+import cardCoverImage from "../assets/listing-loading-card-cover.jpg";
 
-export const ListingsSkeleton = (props: Props) => {
-  const errorAlert = props.error
-    ? <Alert className="listings-skeleton__alert" type="error" message="Something went wrong! Please, try again later..."/>
-    : null;
+export const ListingsSkeleton = () => {
+  const emptyData = [{}, {}, {}, {}, {}, {}, {}, {}];
 
   return (
-    <div className="listings-skeleton">
-      {errorAlert}
-      <h2>{props.title}</h2>
-      <Skeleton active paragraph={{ rows: 1 }}/>
-      <Divider />
-      <Skeleton active paragraph={{ rows: 1 }}/>
-      <Divider />
-      <Skeleton active paragraph={{ rows: 1 }}/>
+    <div>
+      <Skeleton paragraph={{ rows: 1 }} />
+      <List
+        grid={{
+          gutter: 8,
+          xs: 1,
+          sm: 2,
+          lg: 4
+        }}
+        dataSource={emptyData}
+        renderItem={() => (
+          <List.Item>
+            <Card
+              cover={
+                <div
+                  style={{ backgroundImage: `url(${cardCoverImage})` }}
+                  className="listings-skeleton__card-cover-img"
+                ></div>
+              }
+              loading
+              className="listings-skeleton__card"
+            />
+          </List.Item>
+        )}
+      />
     </div>
   );
 };

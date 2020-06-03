@@ -6,6 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### `npm install`
 
+Create a .env file with the following variables from your Stripe account:
+
+```
+REACT_APP_STRIPE_CLIENT_ID=XXX
+REACT_APP_STRIPE_PUBLIC_KEY=XXX
+```
+
 ## Available Scripts
 
 ### `npm start`
