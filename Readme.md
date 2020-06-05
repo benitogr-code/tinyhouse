@@ -4,8 +4,6 @@ This repository contains the code for the application developed in the **Tiny Ho
 
 For a live demo go to: https://www.tinyhouse.app/
 
-![](_assets/tinyhouse-v2.jpg)
-
 ### Server
 
 The server side provides a **GraphQL** API implemented with **NodeJs**, **Express** and **Apollo**.
